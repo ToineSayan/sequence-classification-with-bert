@@ -60,13 +60,14 @@ training_args = TrainingArguments(**args['training_args'])
 preliminary_training_args = args['preliminary_training_args']
 # Get the configuration for the 'head only training' phase 
 head_only_training_args = copy.deepcopy(training_args)
-if 'training_args' in preliminary_training_args.keys():
-    for k,v in preliminary_training_args['training_args'].items():
+if not preliminary_training_args == None:
+    for k,v in preliminary_training_args.items():
         head_only_training_args.__setattr__(k,v)
+else:
+    head_only_training_args.do_train = False
 if parsed_args.eval_only:
     training_args.do_train = False
     head_only_training_args.do_train = False
-
 
 
 
