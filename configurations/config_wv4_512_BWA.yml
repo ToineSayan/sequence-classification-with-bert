@@ -22,8 +22,18 @@ model_args:
   # Model arguments
   name_or_path: 'bert-base-uncased' # bert model to use (one can also specify a path)  
   classification_head: 'sequence_classifier_with_word_attention' # value among 'base_sequence_classifier', 'sequence_classifier_with_word_attention'
-  hidden_dropout_prob: 0.5 # dropout probability for the classification head
+  hidden_dropout_prob: 0.2 # dropout probability for the classification head
   freeze_bert: True # wether to freeze bert or not during training
+
+preliminary_training_args: 
+  do_train: True
+  num_train_epochs: 30
+  load_best_model_at_end: False
+  # evaluation_strategy: 'no'
+  eval_steps: 1000
+  learning_rate: 1.e-4 # don't forget the '.'
+  lr_scheduler_type: constant
+  weight_decay: 0.1
 
 training_args:
   # Trainer arguments
@@ -35,11 +45,11 @@ training_args:
   optim: 'adamw_torch'
   gradient_accumulation_steps: 1
   eval_accumulation_steps: 1
-  learning_rate: 1.e-4 # don't forget the '.'
-  weight_decay: 1.0
-  num_train_epochs: 30
-  lr_scheduler_type: constant
-  warmup_steps: 500
+  learning_rate: 1.e-5 # don't forget the '.'
+  weight_decay: 0.1
+  num_train_epochs: 10
+  lr_scheduler_type: constant # ['linear', 'cosine', 'cosine_with_restarts', 'polynomial', 'constant', 'constant_with_warmup', 'inverse_sqrt', 'reduce_lr_on_plateau']
+  warmup_steps: 0
   logging_steps: 50
   seed: 42
   label_names: ~ # defaults to 'labels'
@@ -53,8 +63,3 @@ training_args:
   eval_steps: 200
   output_dir: ./outputs/models 
 
-preliminary_training_args:
-  do_train: True
-  num_train_epochs: 5
-  load_best_model_at_end: False
-  evaluation_strategy: 'no'

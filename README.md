@@ -100,6 +100,6 @@ w/ BertWithWordAttention
 | Dataset name         | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
 | -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
 | WoS (Web of Science) | 512              |                |                | wos              |                                |
-| WikiVitals (level 4) | 16               |                |                | wikivitals       |                                |
-| WikiVitals (level 4) | 128              | 85.94          | 36.18          | wikivitals       |                                |
-| WikiVitals (level 4) | 512              |                |                | wikivitals       |                                |
+| WikiVitals (level 4) | 16               |                |                | wv4_16_BWA       |                                |
+| WikiVitals (level 4) | 128              | 85.94          | 36.18          | wv4_128_BWA      |                                |
+| WikiVitals (level 4) | 512              | 87.16          | 37.72          | wv4_512_BWA      |                                |
