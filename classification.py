@@ -50,9 +50,6 @@ np.random.seed(global_seed)
 # BertForSequenceClassification : https://huggingface.co/docs/transformers/v4.30.0/en/model_doc/bert#transformers.BertForSequenceClassification
 #       Code: https://github.com/huggingface/transformers/blob/v4.30.0/src/transformers/models/bert/modeling_bert.py#L1517
 
-# Parse arguments
-# parser = HfArgumentParser((BertConfig, DataTrainingArguments, TrainingArguments))
-# model_args, data_args, training_args = parser.parse_dict(args, allow_extra_keys=True)
 
 data_args = DataTrainingArguments(**args['data_args'])
 model_args = BertConfig(**args['model_args'])
@@ -114,7 +111,7 @@ def count_parameters(model_to_evaluate):
     return sum(p.numel() for p in model_to_evaluate.parameters() if p.requires_grad)
 
 # -----------------------------------------------------------------
-# Training
+# Training and saving the model
 # -----------------------------------------------------------------
 # Preliminary training
 if head_only_training_args.do_train:
@@ -139,14 +136,10 @@ if head_only_training_args.do_train:
     # Train the model
     trainer.train()
 
-# Full training
-print("\nFull training starts...")
-# Display training configuration
-print(f"\nTraining configuration:{training_args}\n")
+
 # Unfreeze Bert (has no effect if Bert has not been frozen)
 for param in model.bert.parameters():
     param.requires_grad = True
-print(f"Number of trainable parameters (full training): {count_parameters(model)}\n")
 # Initialize the trainer for full training
 trainer = Trainer(
     model=model,
@@ -156,8 +149,16 @@ trainer = Trainer(
     data_collator=data_collator,
     tokenizer=tokenizer
 )
-# Train the model
-trainer.train() if training_args.do_train else None
+if training_args.do_train:
+    # Full training
+    print("\nFull training starts...")
+    # Display training configuration
+    print(f"\nTraining configuration:{training_args}\n")
+    print(f"Number of trainable parameters (full training): {count_parameters(model)}\n")
+    # Train the model
+    trainer.train() if training_args.do_train else None
+
+
 # Save the model
 import time
 trainer.save_model(f"model_{parsed_args.c}_{time.time()}")
@@ -166,6 +167,7 @@ trainer.save_model(f"model_{parsed_args.c}_{time.time()}")
 # -----------------------------------------------------------------
 # Evaluation
 # -----------------------------------------------------------------
+print("\nEvaluation starts...")
 import evaluate
 # Define the metrics to compute for each problem type (single label or multilabel classification)
 def compute_metrics(eval_preds, threshold = 0.5, problem_type = model_args.problem_type): 
