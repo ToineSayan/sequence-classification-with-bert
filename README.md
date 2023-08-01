@@ -94,7 +94,7 @@ Level 0 (11 classes)
 | Model                | max. # tokens    | Accuracy       | config. id       | Comments                       |
 | -------------------- | ---------------- | -------------- | ---------------- | ------------------------------ |
 | BSC                  | 128              | **95.83**          |  wv-lvl5-04-2022_128_BSC_label0  |                                |
-| BSC                  | 512              |                |                  |                                |
+| BSC                  | 512              | 95.17          |   wv-lvl5-04-2022_512_BSC_label0               |                                |
 | BWA                  | 128              | 95.57          |  wv-lvl5-04-2022_128_BWA_label0  |                                |
 
 Level 1 (32 classes)
@@ -162,7 +162,38 @@ References:
 Introduced in:
 Feder, A., Oved, N., Shalit, U., & Reichart, R. (2021). [Causalm: Causal model explanation through counterfactual language models.](https://direct.mit.edu/coli/article/47/2/333/98518) Computational Linguistics, 47(2), 333-386.
 
+## Personal notes:
 
+The splits provided by the authors of the "CausaLM" article contain pairs of 'factual' and 'counterfactual' examples. For the evaluation of a model's ability to predict 'gender', 'race' or mood state ('POMS'), this notion of pairs is unnecessary. So, for each split in the dataset we collected the unique instances they contain, an instance being either a factual example or a counterfactual example in the data provided. Below are the statistics for the distribution of these unique instances in the different splits and the 'overlaps' between the different splits (i.e. the rate of unique instances that appear in both splits of the complete dataset).
+
+*Gender as a treatment: *
+Total number of unique observations: 30,055 unique sentences
+Number of unique observations per split and overlap with the other splits:
+* train: 25,169 unique sentences (overlap w/ validation: 6,796, w/ test: 8,184)
+* validation: 9,505 unique sentences (overlap w/ train: 6,796, w/ test: 3,157)
+* test: 11,422 unique sentences (overlap w/ train: 8,184, w/ validation: 3,157)
+* overlap between 'train + validation' and 'test': 9,245 (~81% of the train set)
+For evaluation, I build a train/test/split that has no overlap between the different splits of the dataset with the following characteristics: 
+
+| Total number of instances| #train    | #validation | #test | Comments                       |
+| ------------------------ | --------- | ----------- | ----- | ------------------------------ |
+| 30,005 | 25,169 | 2,709 | 2,177 | |
+|  | *83.88%* | *9.03%* | *7.26%* | |
+
+POMS distribution in sets (train, validation, test):
+* anger: 22.38% - 23.07% - 21.68%
+* fear: 23.25% - 23.48% - 25.17%
+* joy: 23.42% - 24.10% - 23.89%
+* sadness: 23.43% - 23.77% - 22.88%
+* neutral: 7.51% - 5.57% - 6.38%
+
+Race_label distribution in sets (train, validation, test):
+* African-American: 49.97% - 52.05% - 51.17%
+* European: 50.03% - 47.95% - 48.83%
+
+Gender distribution in sets (train, validation, test):
+* male: 49.97% - 49.72% - 50.53%
+* female: 50.03% - 50.28% - 49.47%
 
 
 ## Training

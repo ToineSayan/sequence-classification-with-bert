@@ -161,7 +161,7 @@ if training_args.do_train:
 
 # Save the model
 import time
-trainer.save_model(f"model_{parsed_args.c}_{time.time()}")
+trainer.save_model(f"./outputs/final_models/model_{parsed_args.c}_{time.time()}")
 
 
 # -----------------------------------------------------------------
