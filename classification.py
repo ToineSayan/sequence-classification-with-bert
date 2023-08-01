@@ -210,8 +210,8 @@ def compute_metrics(eval_preds, threshold = 0.5, problem_type = model_args.probl
 trainer.compute_metrics = compute_metrics
 # Do inference on the train and test sets 
 with torch.no_grad(): # from here, only inference 
-    results_train = trainer.predict(preprocessed_dataset['train'], metric_key_prefix='train')
-    print(results_train[-1])
+    # results_train = trainer.predict(preprocessed_dataset['train'], metric_key_prefix='train')
+    # print(results_train[-1])
     results_test = trainer.predict(preprocessed_dataset['test'], metric_key_prefix='test')
     print(results_test[-1])
 

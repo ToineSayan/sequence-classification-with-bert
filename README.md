@@ -162,7 +162,7 @@ References:
 Introduced in:
 Feder, A., Oved, N., Shalit, U., & Reichart, R. (2021). [Causalm: Causal model explanation through counterfactual language models.](https://direct.mit.edu/coli/article/47/2/333/98518) Computational Linguistics, 47(2), 333-386.
 
-## Personal notes:
+#### Personal notes:
 
 The splits provided by the authors of the "CausaLM" article contain pairs of 'factual' and 'counterfactual' examples. For the evaluation of a model's ability to predict 'gender', 'race' or mood state ('POMS'), this notion of pairs is unnecessary. So, for each split in the dataset we collected the unique instances they contain, an instance being either a factual example or a counterfactual example in the data provided. Below are the statistics for the distribution of these unique instances in the different splits and the 'overlaps' between the different splits (i.e. the rate of unique instances that appear in both splits of the complete dataset).
 
@@ -195,6 +195,15 @@ Gender distribution in sets (train, validation, test):
 * male: 49.97% - 49.72% - 50.53%
 * female: 50.03% - 50.28% - 49.47%
 
+#### Evaluation
+
+Gender treatment
+POMS
+
+| Method               | max. # tokens    | Accuracy       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | ---------------- | ------------------------------ |
+| BSC                  | 128              |                |                  |                                |
+| BWA                  | 64               |  94.35         |  EEEC-gender_64_BWA_POMS                |                                |
 
 ## Training
 
