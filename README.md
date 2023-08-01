@@ -1,5 +1,9 @@
 
-# Document Classification via Bert
+# Document or sequence classification via Bert
+
+A constantly evolving document. Calculation of baselines for various datasets used in my NLP research and related projects.
+No hyperparameter optimization has been carried out to calculate these results, unless otherwise stated.
+
 
 ## Models
 
@@ -24,33 +28,79 @@ Useful links:
 
 ## Datasets
 
-  
-### Presentation
-
-**WikiVitals (level 4)**
-* *Description (from NetSet):* Vital articles of Wikipedia in English (level 4) with [...] words used in summaries (tokenization by Spacy, model "en_core_web_lg").
-* Task: classification of the articles according to their topic. Each article has 1 or more label that corresponds to a unique path in a hierarchy of labels
-	* possible tasks: single-label classification, multilabel classification
-* *Dataset infos and download:* [NetSet - WikiVitals (en)](https://netset.telecom-paris.fr/pages/wikivitals.html) (texts not available)
-* *Source:* [Wikivitals Level 4](https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4) (the source has changed since the dataset creation in June 2021)
-
-**Web of Science**
-* *Description:* 
-* *Task:* classification of the articles according to their topic. Each article has 2 labels that corresponds to a unique path in a hierarchy of labels
-	* possible tasks: single-label classification, multilabel classification
-* *Dataset infos and download:* 
-* *Source:* 
-
 ### Statistics
 
 Multilabel datasets:
 
 | Dataset name                 | # total | # train | # val. | # test | max. (& avg.) depth | # labels | Type of classification          |
 | ---------------------------- | ------- | ------- | ------ | ------ | ------------------- | -------- | ------------------------------- |
-| WoS (Web of Science)         |         | 30,070  | 7,518  | 9,397  | 2 (2.0)             | 141      | Article classification by topic |
+| WoS (Web of Science)         | 46,985  | 30,070  | 7,518  | 9,397  | 2 (2.0)             | 141      | Article classification by topic |
 | wikivitals-lvl4              | 10,011  | 6,407   | 1,602  | 2,003  | 3 (--)              | 587      | Article classification by topic |
 | wikivitals-lvl5              |         |         |        |        |                     |          | Article classification by topic |
 | wikivitals-lvl5 (my version) |         |         |        |        |                     |          | Article classification by topic |
+  
+### WikiVitals (level 4)
+
+*Description (from NetSet):* Vital articles of Wikipedia in English (level 4) with [...] words used in summaries (tokenization by Spacy, model "en_core_web_lg").
+
+* *Associated task:* classification (single-label classification, multilabel classification)
+	* classification of the articles according to their topic. Each article has 1 or more label that corresponds to a unique path in a hierarchy of labels
+* *Domain:* Research / Education
+* *Type:* Real
+* *Instance count:* 10,011
+* *Data types:* String, Numeric
+* *Missing values:* No
+* *Dataset infos and download:* [NetSet - WikiVitals (en)](https://netset.telecom-paris.fr/pages/wikivitals.html) (texts not available)
+* *Source:* [Wikivitals Level 4](https://en.wikipedia.org/wiki/Wikipedia:Vital_articles/Level/4) (the source has changed since the dataset creation in June 2021)
+
+#### Evaluation
+
+##### Multilabel
+
+
+| Method               | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
+| BSC                  | 16               | 72.69          | 19.48          | wikivitals       |                                |
+| BSC                  | 128              | 85.74          | 37.36          | wikivitals       |                                |
+| BSC                  | 512              | 85.99          | 34.40          | wikivitals       |                                |
+| BWA                  | 16               |                |                | wv4_16_BWA       |                                |
+| BWA                  | 128              | 85.94          | 36.18          | wv4_128_BWA      |                                |
+| BWA                  | 512              | **87.16**      | **37.72**      | wv4_512_BWA      |                                |
+
+
+### Web of Science
+
+*Description:* 
+
+* *Associated task:* classification (single-label classification, multilabel classification)
+	* classification of the articles according to their topic. Each article has 2 labels that corresponds to a unique path in a hierarchy of labels
+* *Domain:* Research / Education
+* *Type:* Real
+* *Instance count:* 46,985
+* *Data types:* String, Numeric
+* *Missing values:* No
+* *Dataset infos and download:* to be completed
+
+
+#### Evaluation
+
+##### Multilabel
+
+
+| Method               | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
+|  BSC                 | 512              | 85.51          | 78.10          | wos              |                                |
+|  BSC                 | 512              | **86.33**      | 76.77          | wos              |                                |
+|  BWA                 | 512              |                |                | wos              |                                |
+|  Wang et al. (2022)  | 512              | 85.63          | 79.07          | wos              |                                |
+|  Chen et al. (2021)  | 512              | 86.26          | **80.58**      | wos              |                                |
+
+References:
+* Haibin Chen, Qianli Ma, Zhenxi Lin, and Jiangyue Yan. 2021. [Hierarchy-aware label semantics matching network for hierarchical text classification.](https://aclanthology.org/2021.acl-long.337/) In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers), pages 4370–4379, Online. Association for Computational Linguistics.
+* Zihan Wang, Peiyi Wang, Lianzhe Huang, Xin Sun, and Houfeng Wang. 2022. [Incorporating hierarchy into text encoder: a contrastive learning approach for hierarchical text classification.](https://aclanthology.org/2022.acl-long.491/) In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2022, Dublin, Ireland, May 22-27, 2022, pages 7109–7119. Association for Computational Linguistics.
+
+
+
 
 ## Training
 
@@ -77,29 +127,4 @@ To evaluate a model on a train set and a validation set, one can use the --evalu
 **Parameters for training:**
 See this
 
-## Results (on the test set)
 
-### Single label classification
-
-to-do
-
-### Multilabel classification
-
-w/ transformers.BertForSequenceClassification
-
-| Dataset name         | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
-| -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
-| WoS (Web of Science) | 512              | 84.96          | 76.72          | wos              | Consistent w/ results in X & X |
-| WikiVitals (level 4) | 16               | 72.69          | 19.48          | wikivitals       |                                |
-| WikiVitals (level 4) | 128              | 85.74          | 37.36          | wikivitals       |                                |
-| WikiVitals (level 4) | 512              | 85.99          | 34.40          | wikivitals       |                                |
-
-
-w/ BertWithWordAttention
-
-| Dataset name         | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
-| -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
-| WoS (Web of Science) | 512              |                |                | wos              |                                |
-| WikiVitals (level 4) | 16               |                |                | wv4_16_BWA       |                                |
-| WikiVitals (level 4) | 128              | 85.94          | 36.18          | wv4_128_BWA      |                                |
-| WikiVitals (level 4) | 512              | 87.16          | 37.72          | wv4_512_BWA      |                                |
