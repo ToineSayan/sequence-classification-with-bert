@@ -14,6 +14,8 @@ def load_dataset_by_name(data_args, tokenizer):
         ds = load_JSONs(data_args)
     elif data_args.dataset == 'wikivitals-lvl5-04-2022': # wikivitals-lvl5-04-2022
         ds = load_JSONs(data_args)
+    elif data_args.dataset == 'EEEC-gender': # EEEC w/ gender treatment
+        ds = load_JSONs(data_args)
     ds, label2id = prepare_dataset(ds, data_args, tokenizer)
     return(ds, label2id)
 
