@@ -7,7 +7,7 @@ No hyperparameter optimization has been carried out to calculate these results, 
 
 ## Models
 
-### Bert for Sequence classification (*class transformers.BertForSequenceClassification*)
+### BSC: Bert for Sequence classification (*class transformers.BertForSequenceClassification*)
 
 Bert Model transformer with a sequence classification/regression head on top (a linear layer on top of the pooled output)
 
@@ -15,7 +15,7 @@ Useful links:
 - Class [transformers.BertForSequenceClassification](https://huggingface.co/docs/transformers/v4.31.0/en/model_doc/bert#transformers.BertForSequenceClassification) from the Transformers Library 
 
   
-### Bert for Sequence classification with word attention
+### BWA: Bert for Sequence classification with word attention
 
 Bert Model transformer with a sequence classification head on top (a layer with word attention on the tokens of the sequence (CLS included))
 
@@ -58,7 +58,7 @@ Multilabel datasets:
 ##### Multilabel
 
 
-| Method               | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
+| Model                | max. # tokens    | micro-F1       | macro-F1       | config. id       | Comments                       |
 | -------------------- | ---------------- | -------------- | -------------- | ---------------- | ------------------------------ |
 | BSC                  | 16               | 72.69          | 19.48          | wikivitals       |                                |
 | BSC                  | 128              | 85.74          | 37.36          | wikivitals       |                                |
@@ -66,6 +66,52 @@ Multilabel datasets:
 | BWA                  | 16               |                |                | wv4_16_BWA       |                                |
 | BWA                  | 128              | 85.94          | 36.18          | wv4_128_BWA      |                                |
 | BWA                  | 512              | **87.16**      | **37.72**      | wv4_512_BWA      |                                |
+
+
+### wikiVitals-lvl5-04-2022 (our own)
+
+*Description:* Vital articles of Wikipedia in English (level 5) with words used in summaries.
+
+* *Associated task:* classification (single-label classification, multilabel classification)
+	* classification of the articles according to their topic. Each article has 3 labels that corresponds to a unique path in a hierarchy of labels
+* *Domain:* Research / Education
+* *Type:* Real
+* *Instance count:* 48,512
+* *Data types:* String, Numeric
+* *Missing values:* No
+* *Dataset infos and download:* [my Github repo](https://github.com/ToineSayan/wikivitals-lvl5-04-2022) 
+* *Source:* complete dump from April, 2022
+
+#### Evaluation
+
+##### Single-label
+
+Split train/validation/test: 81%/9%/10%.
+Data split in a stratified way.
+
+Level 0 (11 classes)
+
+| Model                | max. # tokens    | Accuracy       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | ---------------- | ------------------------------ |
+| BSC                  | 128              | **95.83**          |  wv-lvl5-04-2022_128_BSC_label0  |                                |
+| BSC                  | 512              |                |                  |                                |
+| BWA                  | 128              | 95.57          |  wv-lvl5-04-2022_128_BWA_label0  |                                |
+
+Level 1 (32 classes)
+
+
+| Model                | max. # tokens    | Accuracy       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | ---------------- | ------------------------------ |
+| BSC                  | 128              | **89.42**      | wv-lvl5-04-2022_128_BSC_label1                 |                                |
+| BSC                  | 512              |                |                  |                                |
+| GMNN w/ FAGCN        | --               | 87.92 (0.31)   |                  | using 0/1 valued representations|
+
+Level 2 (251 classes)
+
+| Method               | max. # tokens    | Accuracy       | config. id       | Comments                       |
+| -------------------- | ---------------- | -------------- | ---------------- | ------------------------------ |
+| BSC                  | 128              |                |                  |                                |
+| BSC                  | 512              |                |                  |                                |
 
 
 ### Web of Science
